@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gallery — Fairway & Beyond</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green-dark: #1a3a1f;
+      --green-mid: #2d5a35;
+      --green-light: #4a8c55;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --cream: #f5f0e8;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--green-dark);
+      color: var(--cream);
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 3rem;
+      background: rgba(10,25,12,0.97);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--cream); font-style: italic; }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--cream);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.75;
+      transition: opacity 0.2s, color 0.2s;
+    }
+
+    .back-btn:hover { opacity: 1; color: var(--gold-light); }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 5rem 4rem 3rem;
+      max-width: 900px;
+    }
+
+    .page-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      color: var(--white);
+      margin-bottom: 1.2rem;
+      line-height: 1.1;
+    }
+
+    .page-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      opacity: 0.7;
+      line-height: 1.7;
+      max-width: 500px;
+    }
+
+    /* GOLD LINE */
+    .gold-line {
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      margin: 2.5rem 4rem;
+    }
+
+    /* FEATURED IMAGE */
+    .featured-section {
+      padding: 0 4rem 4rem;
+    }
+
+    .featured-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .featured-frame {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .featured-frame::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: 10px;
+      bottom: 10px;
+      border: 1px solid rgba(201,168,76,0.35);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .featured-frame img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: auto;
+      max-height: 520px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .img-placeholder {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 420px;
+      background: linear-gradient(135deg, #1f4a27 0%, #2d5a35 50%, #1a3a1f 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      border: 1px dashed rgba(201,168,76,0.3);
+    }
+
+    .img-placeholder-icon { font-size: 3.5rem; opacity: 0.5; }
+
+    .img-placeholder-text {
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.45;
+    }
+
+    .featured-caption {
+      margin-top: 1.2rem;
+      font-size: 0.85rem;
+      opacity: 0.55;
+      font-style: italic;
+      padding-left: 10px;
+      border-left: 2px solid var(--gold);
+    }
+
+    /* TIPS GRID */
+    .tips-section {
+      padding: 2rem 4rem 5rem;
+    }
+
+    .tips-section .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .tips-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      color: var(--white);
+      margin-bottom: 2.5rem;
+    }
+
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1px;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.12);
+    }
+
+    .tip-card {
+      background: var(--green-dark);
+      padding: 2rem;
+      transition: background 0.25s;
+    }
+
+    .tip-card:hover { background: rgba(45,90,53,0.6); }
+
+    .tip-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: rgba(201,168,76,0.2);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .tip-title {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--gold-light);
+      margin-bottom: 0.7rem;
+    }
+
+    .tip-desc {
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.75;
+      opacity: 0.65;
+    }
+
+    /* SCORECARD */
+    .scorecard-section {
+      background: rgba(0,0,0,0.25);
+      border-top: 1px solid rgba(201,168,76,0.15);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+      padding: 4rem;
+    }
+
+    .scorecard-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--white);
+      margin-bottom: 2rem;
+    }
+
+    .scorecard {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .scorecard th {
+      background: var(--green-mid);
+      color: var(--gold);
+      padding: 0.7rem 1rem;
+      text-align: center;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .scorecard td {
+      padding: 0.65rem 1rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      opacity: 0.8;
+    }
+
+    .scorecard tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
+    .scorecard tr:hover td { background: rgba(201,168,76,0.07); }
+
+    /* BACK TO HOME */
+    .back-home {
+      padding: 4rem;
+      text-align: center;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 0.9rem 2.5rem;
+      background: var(--gold);
+      color: var(--green-dark);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.25s, transform 0.2s;
+    }
+
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+    footer {
+      background: rgba(0,0,0,0.4);
+      border-top: 1px solid rgba(201,168,76,0.15);
+      padding: 1.5rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .page-header, .featured-section, .tips-section, .scorecard-section, .back-home { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .gold-line { margin-left: 1.5rem; }
+      footer { flex-direction: column; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">Fairway <span>&amp; Beyond</span></a>
+    <a href="index.html" class="back-btn">← Back to Home</a>
+  </nav>
+
+  <div class="page-header">
+    <p class="page-eyebrow">Course Gallery &amp; Tips</p>
+    <h1 class="page-title">A View From the Fairway</h1>
+    <p class="page-sub">AI-generated imagery, pro tips, and a glimpse of what awaits you on the course.</p>
+  </div>
+
+  <div class="gold-line"></div>
+
+  <!-- FEATURED AI IMAGE -->
+  <section class="featured-section">
+    <p class="featured-label">AI-Generated Course Illustration</p>
+    <div class="featured-frame">
+      <!--
+        INSTRUCTIONS: Replace the div below with:
+        <img src="your-image-filename.jpg" alt="AI-generated golf course" />
+        Upload your image to Replit alongside this file.
+      -->
+      <div class="img-placeholder">
+        <div class="img-placeholder-icon">⛳</div>
+        <p class="img-placeholder-text">Upload your AI-generated image here</p>
+        <p style="font-size:0.75rem; opacity:0.35; letter-spacing:0.1em;">Replace this block with your &lt;img&gt; tag</p>
+      </div>
+    </div>
+    <p class="featured-caption">AI-generated vision of the 18th hole at golden hour — created with Midjourney / DALL-E</p>
+  </section>
+
+  <!-- TIPS -->
+  <section class="tips-section">
+    <p class="section-label">Pro Tips</p>
+    <h2 class="tips-title">Elevate Your Game</h2>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-number">01</div>
+        <div class="tip-title">Master Your Grip</div>
+        <p class="tip-desc">A relaxed, consistent grip pressure of about 5 out of 10 allows maximum club head speed and better feel through impact.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-number">02</div>
+        <div class="tip-title">Read the Green</div>
+        <p class="tip-desc">Walk around the putt to observe slope from multiple angles. The last few feet before the hole matter most — that's where the ball slows and breaks.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-number">03</div>
+        <div class="tip-title">Play the Wind</div>
+        <p class="tip-desc">Toss a little grass in the air or feel the breeze on your skin. Club up into the wind, club down with it, and aim for the middle of the green.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-number">04</div>
+        <div class="tip-title">Course Management</div>
+        <p class="tip-desc">Your best score comes from smart decisions, not hero shots. Lay up, avoid hazards, and give yourself easy angles for approach shots.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-number">05</div>
+        <div class="tip-title">Commit to Every Shot</div>
+        <p class="tip-desc">Doubt is a swing killer. Once you've chosen your club and target, commit fully. Indecision creates tension that ruins timing and tempo.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-number">06</div>
+        <div class="tip-title">Short Game = Low Scores</div>
+        <p class="tip-desc">80% of shots occur within 100 yards of the hole. Spend at least half your practice time chipping and putting — that's where strokes are saved.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCORECARD -->
+  <section class="scorecard-section">
+    <h2 class="scorecard-title">Sample Scorecard — Front 9</h2>
+    <table class="scorecard">
+      <thead>
+        <tr>
+          <th>Hole</th>
+          <th>Par</th>
+          <th>Yards</th>
+          <th>Handicap</th>
+          <th>Your Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>4</td><td>385</td><td>11</td><td>—</td></tr>
+        <tr><td>2</td><td>5</td><td>520</td><td>3</td><td>—</td></tr>
+        <tr><td>3</td><td>3</td><td>175</td><td>15</td><td>—</td></tr>
+        <tr><td>4</td><td>4</td><td>410</td><td>5</td><td>—</td></tr>
+        <tr><td>5</td><td>4</td><td>395</td><td>1</td><td>—</td></tr>
+        <tr><td>6</td><td>3</td><td>190</td><td>17</td><td>—</td></tr>
+        <tr><td>7</td><td>5</td><td>545</td><td>7</td><td>—</td></tr>
+        <tr><td>8</td><td>4</td><td>420</td><td>9</td><td>—</td></tr>
+        <tr><td>9</td><td>4</td><td>375</td><td>13</td><td>—</td></tr>
+        <tr style="font-weight:500; color: var(--gold-light)"><td>OUT</td><td>36</td><td>3,415</td><td>—</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="back-home">
+    <a href="index.html" class="btn-primary">← Return to Home</a>
+  </div>
+
+  <footer>
+    <span>© 2025 Fairway &amp; Beyond</span>
+    <span>Gallery &amp; Tips</span>
+  </footer>
+
+</body>
+</html>
