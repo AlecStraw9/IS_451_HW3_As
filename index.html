@@ -1,24 +1,487 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>Fairway &amp; Beyond</title>
-    <meta name="description" content="Fairway &amp; Beyond — built on Replit. Update this description to reflect the app." />
-    <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="Fairway &amp; Beyond" />
-    <meta property="og:description" content="Fairway &amp; Beyond — built on Replit. Update this description to reflect the app." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Fairway &amp; Beyond" />
-    <meta name="twitter:description" content="Fairway &amp; Beyond — built on Replit. Update this description to reflect the app." />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fairway & Beyond</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green-dark: #1a3a1f;
+      --green-mid: #2d5a35;
+      --green-light: #4a8c55;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --cream: #f5f0e8;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--green-dark);
+      color: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: linear-gradient(to bottom, rgba(10,25,12,0.95), transparent);
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+    }
+
+    .logo span {
+      color: var(--cream);
+      font-style: italic;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav ul a {
+      color: var(--cream);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      transition: opacity 0.2s, color 0.2s;
+    }
+
+    nav ul a:hover { opacity: 1; color: var(--gold-light); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    .hero video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(10, 25, 12, 0.92) 0%,
+        rgba(10, 25, 12, 0.4) 50%,
+        rgba(10, 25, 12, 0.15) 100%
+      );
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 4rem 5rem;
+      max-width: 700px;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      line-height: 1.05;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 em {
+      color: var(--gold-light);
+      font-style: italic;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      font-weight: 300;
+      line-height: 1.7;
+      opacity: 0.85;
+      margin-bottom: 2.5rem;
+      max-width: 480px;
+    }
+
+    .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 0.9rem 2.2rem;
+      background: var(--gold);
+      color: var(--green-dark);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.2s;
+    }
+
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 0.9rem 2.2rem;
+      background: transparent;
+      color: var(--cream);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid rgba(245,240,232,0.4);
+      cursor: pointer;
+      transition: border-color 0.25s, color 0.25s, transform 0.2s;
+    }
+
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold-light); transform: translateY(-2px); }
+
+    /* SCROLL INDICATOR */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      right: 3rem;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+
+    .scroll-hint::after {
+      content: '';
+      width: 1px;
+      height: 50px;
+      background: var(--cream);
+      animation: scrollLine 1.8s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* STATS STRIP */
+    .stats {
+      background: var(--green-mid);
+      border-top: 1px solid rgba(201,168,76,0.3);
+      border-bottom: 1px solid rgba(201,168,76,0.3);
+      display: flex;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .stat-item {
+      flex: 1;
+      max-width: 220px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border-right: 1px solid rgba(201,168,76,0.2);
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--gold);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-top: 0.3rem;
+    }
+
+    /* FEATURES SECTION */
+    .section {
+      padding: 6rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--white);
+      margin-bottom: 1rem;
+      max-width: 500px;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      opacity: 0.7;
+      max-width: 500px;
+      line-height: 1.7;
+      margin-bottom: 3.5rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.18);
+      padding: 2rem;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    }
+
+    .feature-card:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(201,168,76,0.5);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .feature-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--gold-light);
+      margin-bottom: 0.7rem;
+    }
+
+    .feature-desc {
+      font-size: 0.9rem;
+      font-weight: 300;
+      line-height: 1.7;
+      opacity: 0.7;
+    }
+
+    /* DIVIDER */
+    .gold-divider {
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+      margin: 0 auto 4rem;
+    }
+
+    /* QUOTE */
+    .quote-section {
+      background: var(--green-mid);
+      padding: 5rem 4rem;
+      text-align: center;
+    }
+
+    .quote-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-style: italic;
+      color: var(--white);
+      max-width: 700px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.5;
+    }
+
+    .quote-attr {
+      font-size: 0.8rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.8;
+    }
+
+    /* CTA SECTION */
+    .cta-section {
+      padding: 6rem 4rem;
+      text-align: center;
+    }
+
+    .cta-section .section-title {
+      margin: 0 auto 1rem;
+      text-align: center;
+    }
+
+    .cta-section .section-sub {
+      margin: 0 auto 2.5rem;
+      text-align: center;
+    }
+
+    /* FOOTER */
+    footer {
+      background: rgba(0,0,0,0.4);
+      border-top: 1px solid rgba(201,168,76,0.15);
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      nav ul { gap: 1.2rem; }
+      .hero-content { padding: 0 1.5rem 4rem; }
+      .section { padding: 4rem 1.5rem; }
+      .stats { flex-wrap: wrap; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Fairway <span>&amp; Beyond</span></div>
+    <ul>
+      <li><a href="#features">The Game</a></li>
+      <li><a href="content.html">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO with video -->
+  <section class="hero">
+    <video autoplay muted loop playsinline>
+      <source src="video.mp4" type="video/mp4"/>
+      Your browser does not support HTML5 video.
+    </video>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">Welcome to the Course</p>
+      <h1>Where Every <em>Swing</em> Tells a Story</h1>
+      <p>Experience the elegance, precision, and quiet thrill of golf — from the first tee to the final putt. The course awaits.</p>
+      <div class="btn-group">
+        <a href="content.html" class="btn-primary">Explore the Gallery</a>
+        <a href="#features" class="btn-secondary">Learn More</a>
+      </div>
+    </div>
+
+    <div class="scroll-hint">Scroll</div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-item">
+      <span class="stat-number">18</span>
+      <span class="stat-label">Championship Holes</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">72</span>
+      <span class="stat-label">Par Score</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">6,800</span>
+      <span class="stat-label">Yards of Course</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">1893</span>
+      <span class="stat-label">Est. Year</span>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+    <p class="section-label">The Experience</p>
+    <h2 class="section-title">More Than Just a Round of Golf</h2>
+    <p class="section-sub">Every visit to the course is a masterclass in focus, nature, and friendly competition.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⛳</div>
+        <div class="feature-title">World-Class Greens</div>
+        <p class="feature-desc">Meticulously maintained fairways and undulating greens that challenge and delight players of every skill level.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏌️</div>
+        <div class="feature-title">Pro Instruction</div>
+        <p class="feature-desc">One-on-one coaching with certified PGA professionals who will transform your game from tee to green.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌄</div>
+        <div class="feature-title">Stunning Scenery</div>
+        <p class="feature-desc">Play among rolling hills, natural waterways, and century-old trees — a landscape as rewarding as the game itself.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <div class="feature-title">Tournaments</div>
+        <p class="feature-desc">Compete in member events, amateur championships, and charity scrambles throughout the season.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <div class="quote-section">
+    <div class="gold-divider"></div>
+    <p class="quote-text">"Golf is the closest game to the game we call life. You get bad breaks from good shots; you get good breaks from bad shots — but you have to play the ball where it lies."</p>
+    <p class="quote-attr">— Bobby Jones</p>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contact">
+    <p class="section-label">Ready to Play?</p>
+    <h2 class="section-title">Step Onto the Fairway</h2>
+    <p class="section-sub">Browse our gallery, explore tips, and discover what makes this course truly unforgettable.</p>
+    <a href="content.html" class="btn-primary">Visit the Gallery →</a>
+  </section>
+
+  <footer>
+    <span>© 2025 Fairway &amp; Beyond</span>
+    <span>Crafted with passion for the game</span>
+  </footer>
+
+</body>
 </html>
